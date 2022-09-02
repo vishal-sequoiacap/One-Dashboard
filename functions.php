@@ -44,6 +44,7 @@ if ( ! function_exists( 'one_dashboard_setup' ) ) {
 	* Add column to posts table.
 	*  @param array $column_name Name of the column.
 	*
+	* @return array
 	*/
 	function one_dashboard_column_add( $column_name ) {
 		$column_name['site'] = 'Sites';
