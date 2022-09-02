@@ -40,12 +40,23 @@ if ( ! function_exists( 'one_dashboard_setup' ) ) {
 		add_theme_support( 'title-tag' );
 	}
 
+	/*
+	* Add column to posts table.
+	* @param array $column_name Name of the column.
+	*
+	*/
 	function one_dashboard_column_add( $column_name ) {
 		$column_name[ 'site' ] = 'Sites';
 		return $column_name;
 	}
 	add_filter( 'manage_posts_columns', 'one_dashboard_column_add' );
 
+	/*
+	* Add data to column in posts table.
+	*
+	* @param $column_name Name of the column.
+	* @param $post_ID returns post id for column.
+	*/
 	function one_dashboard_site_columns_content( $column_name, $post_ID ) {
 		$taxonomy  = $column_name;
 		$post_type = get_post_type( $post_id );
