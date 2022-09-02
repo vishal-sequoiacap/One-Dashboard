@@ -42,11 +42,11 @@ if ( ! function_exists( 'one_dashboard_setup' ) ) {
 
 	/*
 	* Add column to posts table.
-	* @param array $column_name Name of the column.
+	*  @param array $column_name Name of the column.
 	*
 	*/
 	function one_dashboard_column_add( $column_name ) {
-		$column_name[ 'site' ] = 'Sites';
+		$column_name['site'] = 'Sites';
 		return $column_name;
 	}
 	add_filter( 'manage_posts_columns', 'one_dashboard_column_add' );
@@ -55,21 +55,25 @@ if ( ! function_exists( 'one_dashboard_setup' ) ) {
 	* Add data to column in posts table.
 	*
 	* @param $column_name Name of the column.
-	* @param $post_ID returns post id for column.
+	* @param $post_id returns post id for column.
 	*/
-	function one_dashboard_site_columns_content( $column_name, $post_ID ) {
+	function one_dashboard_site_columns_content( $column_name, $post_id ) {
 		$taxonomy  = $column_name;
 		$post_type = get_post_type( $post_id );
 		$terms     = get_the_terms( $post_id, $taxonomy );
 		if ( ! empty ( $terms ) ) {
 			foreach ( $terms as $term )
-			$post_terms[] = "<a href='edit.php?post_type={ $post_type }&{ $taxonomy }={ $term->slug }'> " .esc_html( sanitize_term_field ( 'name', $term->name, $term->term_id, $taxonomy, 'edit' ) ) . "</a>";
+			$post_terms[] = sprintf(
+				'<a href="%1$s" class="application-link">%2$s</a>',
+				esc_url( 'edit.php?post_type={ $post_type }&{ $taxonomy }={ $term->slug }' ),
+				esc_html( sanitize_term_field ( 'name', $term->name, $term->term_id, $taxonomy, 'edit' ) ),
+			);
 			echo join( '', $post_terms );
 		}
 		else {
 			echo '—';
 		}
-	  }
+	}
 
 	add_action( 'manage_posts_custom_column', 'one_dashboard_site_columns_content', 10, 2 );
 }
