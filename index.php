@@ -16,4 +16,7 @@
 
 ?>
 
-<h1>Coming Soon...</h1>
+<div style="text-align: center; display: flex; flex-flow: column; justify-content: center; align-items: center; height: 100vh;">
+      <h1 style="margin-bottom: 50px; margin-top: 0;">Welcome to API Hub</h1>
+      <img src="<?php echo esc_url( get_template_directory_uri() . '/screenshot.jpg' ); ?>" alt="" style="height: 300px; width: 500px;">
+</div>

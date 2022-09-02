@@ -39,6 +39,28 @@ if ( ! function_exists( 'one_dashboard_setup' ) ) {
 		 */
 		add_theme_support( 'title-tag' );
 	}
+
+	function one_dashboard_column_add( $column_name ) {
+		$column_name[ 'site' ] = 'Sites';
+		return $column_name;
+	}
+	add_filter( 'manage_posts_columns', 'one_dashboard_column_add' );
+
+	function one_dashboard_site_columns_content( $column_name, $post_ID ) {
+		$taxonomy  = $column_name;
+		$post_type = get_post_type( $post_id );
+		$terms     = get_the_terms( $post_id, $taxonomy );
+		if ( ! empty ( $terms ) ) {
+			foreach ( $terms as $term )
+			$post_terms[] = "<a href='edit.php?post_type={ $post_type }&{ $taxonomy }={ $term->slug }'> " .esc_html( sanitize_term_field ( 'name', $term->name, $term->term_id, $taxonomy, 'edit' ) ) . "</a>";
+			echo join( '', $post_terms );
+		}
+		else {
+			echo '—';
+		}
+	  }
+
+	add_action( 'manage_posts_custom_column', 'one_dashboard_site_columns_content', 10, 2 );
 }
 add_action( 'after_setup_theme', 'one_dashboard_setup' );
 
