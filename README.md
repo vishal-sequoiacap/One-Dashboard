@@ -46,6 +46,19 @@ Example Request:
 
 -----------
 
+### Category Search:
+
+Description:
+- Query this endpoint to retrieve a collection of categories. The response you receive can be controlled and filtered using the URL query parameters below.
+
+Definition:
+- `GET /wp/v2/categories`
+
+Example Request:
+- $ curl `https://example.com/wp-json/wp/v2/categories`
+
+-----------
+
 **NOTE:** `site=ID` is the required param on the above REST API endpoints, if user not pass the `site` param than it will show an error.
 
 -----------
