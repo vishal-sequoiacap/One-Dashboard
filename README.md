@@ -17,10 +17,10 @@ Description:
 - Generate JWT token.
 
 Definition:
-- `GET /jwt-auth/v1/token`
+- `POST /jwt-auth/v1/token`
 
 Example Request:
-- $ curl `https://example.com/wp-json/jwt-auth/v1/token`
+- $ curl `https://example.com/wp-json/jwt-auth/v1/token` - We need to send the username and password in the post method submission to get token.
 
 **NOTE:** The token which is generated in the above request, that we need to pass in the below all requests as the Authorization Bearer header, without passing this token the REST API request will not serve the data.
 
