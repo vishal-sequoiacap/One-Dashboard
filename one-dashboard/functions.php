@@ -39,46 +39,25 @@ if ( ! function_exists( 'one_dashboard_setup' ) ) {
 		 */
 		add_theme_support( 'title-tag' );
 	}
-
-	/*
-	* Add column to posts table.
-	*  @param array $column_name Name of the column.
-	*
-	* @return array
-	*/
-	function one_dashboard_column_add( $column_name ) {
-		$column_name['site'] = 'Sites';
-		return $column_name;
-	}
-	add_filter( 'manage_posts_columns', 'one_dashboard_column_add' );
-
-	/*
-	* Add data to column in posts table.
-	*
-	* @param $column_name Name of the column.
-	* @param $post_id returns post id for column.
-	*/
-	function one_dashboard_site_columns_content( $column_name, $post_id ) {
-		$taxonomy  = $column_name;
-		$post_type = get_post_type( $post_id );
-		$terms     = get_the_terms( $post_id, $taxonomy );
-		if ( ! empty ( $terms ) ) {
-			foreach ( $terms as $term )
-			$post_terms[] = sprintf(
-				'<a href="%1$s" class="application-link">%2$s</a>',
-				esc_url( 'edit.php?post_type={ $post_type }&{ $taxonomy }={ $term->slug }' ),
-				esc_html( sanitize_term_field ( 'name', $term->name, $term->term_id, $taxonomy, 'edit' ) ),
-			);
-			echo join( '', $post_terms );
-		}
-		else {
-			echo '—';
-		}
-	}
-
-	add_action( 'manage_posts_custom_column', 'one_dashboard_site_columns_content', 10, 2 );
 }
 add_action( 'after_setup_theme', 'one_dashboard_setup' );
 
 // Custom color classes.
 require get_template_directory() . '/taxonomies/taxonomy-site.php';
+
+/**
+ * Restrict rest api for non-logged in users.
+ *
+ * NOTE: We can use https://wordpress.org/plugins/jwt-authentication-for-wp-rest-api/ plugin to create token and send
+ *       the REST request.
+ */
+function one_dashboard_restrict_rest() {
+
+	if ( ! is_user_logged_in() ) {
+
+		// Removes WordPress endpoints:
+		remove_action( 'rest_api_init', 'create_initial_rest_routes', 99 );
+	}
+
+}
+add_action( 'init', 'one_dashboard_restrict_rest' );

@@ -1,0 +1,128 @@
+{
+	"info": {
+		"_postman_id": "2983202a-9398-41dc-b4ec-4edb14a29929",
+		"name": "JWT Auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23168449"
+	},
+	"item": [
+		{
+			"name": "http://localhost:10018/wp-json/jwt-auth/v1/token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "vishal",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "vishal",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:10018/wp-json/jwt-auth/v1/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "10018",
+					"path": [
+						"wp-json",
+						"jwt-auth",
+						"v1",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:10018/wp-json/wp/v2/posts?site=14",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6MTAwMTgiLCJpYXQiOjE2NjIzNTg3ODYsIm5iZiI6MTY2MjM1ODc4NiwiZXhwIjoxNjYyOTYzNTg2LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.k1iqKIVepNzVG_fCgCukEuWwnZHUHgII0DkC0z5-M0Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:10018/wp-json/wp/v2/posts?site=14",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "10018",
+					"path": [
+						"wp-json",
+						"wp",
+						"v2",
+						"posts"
+					],
+					"query": [
+						{
+							"key": "site",
+							"value": "14"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:10018/wp-json/wp/v2/posts/5589",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6MTAwMTgiLCJpYXQiOjE2NjIzNTg3ODYsIm5iZiI6MTY2MjM1ODc4NiwiZXhwIjoxNjYyOTYzNTg2LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.k1iqKIVepNzVG_fCgCukEuWwnZHUHgII0DkC0z5-M0Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "Hello World",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:10018/wp-json/wp/v2/posts/5589",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "10018",
+					"path": [
+						"wp-json",
+						"wp",
+						"v2",
+						"posts",
+						"5589"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

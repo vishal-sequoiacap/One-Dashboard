@@ -123,3 +123,57 @@ function od_rest_post_search_query( $args, $request ) {
 	return $args;
 }
 add_filter( 'rest_post_search_query', 'od_rest_post_search_query', 10, 2 );
+
+/**
+ * Add column to posts table.
+ *
+ * @param array $column_name Column name.
+ *
+ * @return array
+ */
+function one_dashboard_column_add( $column_name ) {
+
+	$column_name['site'] = 'Sites';
+
+	return $column_name;
+}
+add_filter( 'manage_posts_columns', 'one_dashboard_column_add' );
+
+/**
+ * Add data to column in posts table.
+ *
+ * @param string $column_name Column name.
+ * @param int    $post_id     Post id.
+ *
+ * @return void
+ */
+function one_dashboard_site_columns_content( $column_name, $post_id ) {
+
+	if ( 'site' === $column_name ) {
+
+		$taxonomy = 'site';
+
+		$terms = get_the_terms( $post_id, $taxonomy );
+
+		if ( ! empty ( $terms ) ) {
+
+			$post_terms = array();
+
+			foreach ( $terms as $term ) {
+
+				$post_terms[] = sprintf(
+					'<a href="%1$s" class="application-link">%2$s</a>',
+					esc_url( 'edit.php?post_type=post&{ $taxonomy }={ $term->slug }' ),
+					esc_html( sanitize_term_field( 'name', $term->name, $term->term_id, 'site', 'edit' ) )
+				);
+			}
+
+			echo join( ', ', $post_terms );
+
+		} else {
+
+			echo '—';
+		}
+	}
+}
+add_action( 'manage_posts_custom_column', 'one_dashboard_site_columns_content', 10, 2 );
