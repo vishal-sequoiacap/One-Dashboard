@@ -51,13 +51,39 @@ require get_template_directory() . '/taxonomies/taxonomy-site.php';
  * NOTE: We can use https://wordpress.org/plugins/jwt-authentication-for-wp-rest-api/ plugin to create token and send
  *       the REST request.
  */
-function one_dashboard_restrict_rest() {
+function one_dashboard_determine_current_user( $user ) {
 
-	if ( ! is_user_logged_in() ) {
+	if ( empty( $user ) ) {
 
-		// Removes WordPress endpoints:
-		remove_action( 'rest_api_init', 'create_initial_rest_routes', 99 );
+		add_filter( 'rest_pre_dispatch', 'one_dashboard_rest_pre_dispatch', 11, 3 );
 	}
 
+	return $user;
 }
-add_action( 'init', 'one_dashboard_restrict_rest' );
+add_filter( 'determine_current_user', 'one_dashboard_determine_current_user', 11 );
+
+/**
+ * Show error if the user not send the Authorization token for each request.
+ *
+ * @param mixed           $result  Response to replace the requested version with. Can be anything
+ *                                 a normal endpoint can return, or null to not hijack the request.
+ * @param WP_REST_Server  $server  Server instance.
+ * @param WP_REST_Request $request Request used to generate the response.
+ *
+ * @return mixed|WP_Error
+ */
+function one_dashboard_rest_pre_dispatch( $result, $server, $request ) {
+
+	if ( '/jwt-auth/v1/token' !== $request->get_route() ) {
+
+		return new WP_Error(
+			'jwt_auth_no_auth_header',
+			'Authorization header not found.',
+			array(
+				'status' => 403,
+			)
+		);
+	}
+
+	return $result;
+}
